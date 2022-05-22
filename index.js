@@ -10,7 +10,7 @@ app.get('/villains/:slug', getVillainBySlug)
 
 app.post('/villains', bodyparser.json(), addVillain)
 
-app.listen(1300, () => {
+app.listen(1337, () => {
   // eslint-disable-next-line no-console
   console.log('listening @ http://localhost:1337')
 })
