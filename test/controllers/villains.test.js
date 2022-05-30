@@ -65,5 +65,17 @@ describe("Testing the villains controller", () => {
       expect(stubFindOne).to.have.callCount(1);
       expect(stubSend).to.have.been.calledWith(jafarVillain);
     });
+    it("returns a 404 when no hero is found in the db", async () => {
+      const request = { params: { searchTerm: "villainDoesNotExist" } };
+
+      stubFindOne.returns(null);
+
+      await getVillainBySlug(request, response);
+
+      expect(stubFindOne).to.have.been.calledWith({
+        where: { slug: "villainDoesNotExist" },
+      });
+      expect(stubSendStatus).to.have.been.calledWith(404);
+    });
   });
 });

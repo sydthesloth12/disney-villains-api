@@ -11,16 +11,20 @@ const getAllVillains = async (request, response) => {
 };
 
 const getVillainBySlug = async (request, response) => {
-  const slugSearch = request.params.slug;
+  try {
+    const { searchTerm } = request.params;
 
-  const foundSlug = await villains.findOne({
-    where: { slug: slugSearch },
-  });
+    if (!searchTerm) return response.sendStatus(404);
 
-  if (foundSlug) {
-    return response.status(200).send(foundSlug);
-  } else {
-    return response.status(404).send("Slug not found");
+    const foundSlug = await villains.findOne({
+      where: { slug: searchTerm },
+    });
+
+    if (!foundSlug) return response.sendStatus(404);
+
+    return response.send(foundSlug);
+  } catch (error) {
+    return response.sendStatus(500);
   }
 };
 
