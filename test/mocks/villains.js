@@ -16,6 +16,15 @@ const villainsList = [
   },
 ];
 
+const jafarVillain = [
+  {
+    name: "Jafar",
+    movie: "Aladdin",
+    slug: "jafar",
+  },
+];
+
 module.exports = {
   villainsList,
+  jafarVillain,
 };
