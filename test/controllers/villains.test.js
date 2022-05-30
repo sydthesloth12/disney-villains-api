@@ -21,6 +21,8 @@ describe("Testing the villains controller", () => {
   let stubSendStatus = sandbox.stub();
   let response = {
     send: stubSend,
+    sendStatus: stubSendStatus,
+    status: stubStatus,
   };
 
   beforeEach(() => {
@@ -39,6 +41,15 @@ describe("Testing the villains controller", () => {
 
       expect(stubFindAll).to.have.callCount(1);
       expect(stubSend).to.have.been.calledWith(villainsList);
+    });
+
+    it("returns 500 when database down, throws error in process", async () => {
+      stubFindAll.throws("error");
+
+      await getAllVillains({}, response);
+
+      expect(stubFindAll).to.have.callCount(1);
+      expect(stubSendStatus).to.have.been.calledWith(500);
     });
   });
 });
