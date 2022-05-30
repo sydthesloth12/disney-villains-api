@@ -77,5 +77,17 @@ describe("Testing the villains controller", () => {
       });
       expect(stubSendStatus).to.have.been.calledWith(404);
     });
+    it("returns a 500 when the database errors out", async () => {
+      const request = { params: { searchTerm: "jafar" } };
+
+      stubFindOne.throws("ERROR!");
+
+      await getVillainBySlug(request, response);
+
+      expect(stubFindOne).to.have.been.calledWith({
+        where: { slug: "jafar" },
+      });
+      expect(stubSendStatus).to.have.been.calledWith(500);
+    });
   });
 });
