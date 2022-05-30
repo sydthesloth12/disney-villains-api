@@ -119,5 +119,15 @@ describe("Testing the villains controller", () => {
         "Please enter all fields; name, movie, slug"
       );
     });
+    it("returns a 500 status code if the database fails", async () => {
+      const request = { body: redSkullVillain };
+
+      stubCreate.throws("Error!");
+
+      await addVillain(request, response);
+
+      expect(stubCreate).to.have.been.calledWith(redSkullVillain);
+      expect(stubSendStatus).to.have.been.calledWith(500);
+    });
   });
 });
