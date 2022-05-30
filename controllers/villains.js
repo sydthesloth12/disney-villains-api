@@ -29,21 +29,25 @@ const getVillainBySlug = async (request, response) => {
 };
 
 const addVillain = async (request, response) => {
-  const { name, movie, slug } = request.body;
+  try {
+    const { name, movie, slug } = request.body;
 
-  if (!name || !movie || !slug) {
-    return response
-      .status(404)
-      .send("Please enter all fields; name, movie, slug");
+    if (!name || !movie || !slug) {
+      return response
+        .status(404)
+        .send("Please enter all fields; name, movie, slug");
+    }
+
+    const newVillain = await villains.create({
+      name,
+      movie,
+      slug,
+    });
+
+    return response.status(201).send(newVillain);
+  } catch (error) {
+    return response.sendStatus(500);
   }
-
-  const newVillain = await villains.create({
-    name,
-    movie,
-    slug,
-  });
-
-  return response.status(201).send(newVillain);
 };
 
 module.exports = {

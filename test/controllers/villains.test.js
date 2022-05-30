@@ -8,7 +8,12 @@ const {
   addVillain,
 } = require("../../controllers/villains");
 const { villains } = require("../../models/index");
-const { villainsList, jafarVillain } = require("../mocks/villains");
+const {
+  villainsList,
+  jafarVillain,
+  redSkullVillain,
+  badVillain,
+} = require("../mocks/villains");
 
 chai.use(sinonChai);
 const { expect } = chai;
@@ -17,6 +22,7 @@ describe("Testing the villains controller", () => {
   let sandbox = sinon.createSandbox();
   let stubFindAll = sandbox.stub(villains, "findAll");
   let stubFindOne = sandbox.stub(villains, "findOne");
+  let stubCreate = sandbox.stub(villains, "create");
   let stubSend = sandbox.stub();
   let stubStatus = sandbox.stub();
   let stubSendStatus = sandbox.stub();
@@ -88,6 +94,30 @@ describe("Testing the villains controller", () => {
         where: { slug: "jafar" },
       });
       expect(stubSendStatus).to.have.been.calledWith(500);
+    });
+  });
+  describe("addVillain", () => {
+    it("accepts a new villain and saves to db, returns status of 201 and villain", async () => {
+      const request = { body: redSkullVillain };
+
+      stubCreate.returns(redSkullVillain);
+
+      await addVillain(request, response);
+
+      expect(stubCreate).to.have.been.calledWith(redSkullVillain);
+      expect(stubStatus).to.have.been.calledWith(201);
+      expect(stubSend).to.have.been.calledWith(redSkullVillain);
+    });
+    it("returns a 404 when the user forgets to include all the required fields ", async () => {
+      const request = { body: badVillain };
+
+      await addVillain(request, response);
+
+      expect(stubStatus).to.have.been.calledWith(404);
+
+      expect(stubSend).to.have.been.calledWith(
+        "Please enter all fields; name, movie, slug"
+      );
     });
   });
 });

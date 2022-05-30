@@ -24,7 +24,20 @@ const jafarVillain = [
   },
 ];
 
+const redSkullVillain = {
+  name: "Red Skull",
+  movie: "Captain American: The Winter Soldier",
+  slug: "red-skull",
+};
+
+const badVillain = {
+  name: "Red Skull",
+  slug: "red-skull",
+};
+
 module.exports = {
   villainsList,
   jafarVillain,
+  redSkullVillain,
+  badVillain,
 };
